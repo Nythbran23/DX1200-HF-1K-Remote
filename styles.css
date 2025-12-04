@@ -24,7 +24,7 @@ body {
 /* Header */
 header {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: auto 1fr auto auto;
     align-items: center;
     padding: 10px 6px;  /* Reduced left/right padding from 12px to 6px */
     background: #1a1a1a;
@@ -55,6 +55,27 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.header-model {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.model-indicator {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ff8800;
+    letter-spacing: 1px;
+    padding: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.model-indicator.visible {
+    opacity: 1;
 }
 
 .header-right {

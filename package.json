@@ -1,11 +1,11 @@
 {
   "name": "gemini-monitor",
-  "version": "1.0.0-alpha",
+  "version": "1.0.1-alpha",
   "description": "DX1200 Gemini Amplifier Remote Monitor and Control",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --mac --win --linux --publish never",
+    "build": "electron-builder --publish never",
     "build:mac": "electron-builder --mac --publish never",
     "build:win": "electron-builder --win --publish never",
     "build:linux": "electron-builder --linux --publish never"

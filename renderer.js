@@ -42,6 +42,11 @@ let currentPowerWatts = 0;
 let currentVSWR = 1.0;
 let currentBand = '';
 let selectedAntenna = '';
+let ampModel = null; // Will be detected: 'DX1200' or 'HF1K'
+let modelDetected = false;
+let detectionInProgress = false;
+let bandBeforeDetection = null;
+let detectionAttempts = 0; // Count status updates during detection
 
 // Band frequency ranges for display
 const bandRanges = {
@@ -316,12 +321,63 @@ window.geminiAPI.onAmpBanner((banner) => {
         document.getElementById('firmwareVersion').textContent = `Firmware: ${versionMatch[1]}`;
     }
     
+    // Model detection will happen after first status update
+    // (we need to know current band first)
+    
     // Query current power level setting after connection
     setTimeout(() => {
         console.log('Sending P command to query power level...');
         window.geminiAPI.sendCommand('P');
     }, 500);
 });
+
+// Configure band buttons based on detected amplifier model
+function configureBandButtons(model) {
+    console.log('Configuring band buttons for model:', model);
+    
+    // Update model indicator in header
+    const modelIndicator = document.getElementById('modelIndicator');
+    if (model === 'DX1200') {
+        modelIndicator.textContent = 'DX1200';
+        modelIndicator.classList.add('visible');
+        
+        // DX1200: Show 4m (70MHz), hide 472kHz
+        document.querySelectorAll('[data-model="DX1200"]').forEach(btn => {
+            btn.style.display = '';
+            console.log('Showing DX1200 band:', btn.textContent);
+        });
+        document.querySelectorAll('[data-model="HF1K"]').forEach(btn => {
+            btn.style.display = 'none';
+            console.log('Hiding HF1K band:', btn.textContent);
+        });
+    } else if (model === 'HF1K') {
+        modelIndicator.textContent = 'HF-1K';
+        modelIndicator.classList.add('visible');
+        
+        // HF-1K: Show 472kHz, hide 4m (70MHz)
+        document.querySelectorAll('[data-model="HF1K"]').forEach(btn => {
+            btn.style.display = '';
+            console.log('Showing HF1K band:', btn.textContent);
+        });
+        document.querySelectorAll('[data-model="DX1200"]').forEach(btn => {
+            btn.style.display = 'none';
+            console.log('Hiding DX1200 band:', btn.textContent);
+        });
+    }
+}
+
+// Get band command to restore original band after detection
+// Need to find which button corresponds to this frequency
+function getBandCommand(bandFreq) {
+    const bandUpper = bandFreq.toUpperCase();
+    const btn = Array.from(document.querySelectorAll('.band-btn')).find(b => 
+        b.getAttribute('data-band') === bandUpper
+    );
+    if (btn) {
+        return btn.getAttribute('data-band');
+    }
+    return null;
+}
 
 // Status update handler
 window.geminiAPI.onAmpStatus((status) => {
@@ -344,6 +400,68 @@ window.geminiAPI.onAmpStatus((status) => {
     // Band - just update button highlighting
     if (status.BAND) {
         currentBand = status.BAND;
+        
+        // Start model detection on first band report (if not already started)
+        if (!modelDetected && !detectionInProgress) {
+            detectionInProgress = true;
+            bandBeforeDetection = status.BAND;
+            
+            console.log('Starting model detection...');
+            console.log('Current band:', bandBeforeDetection);
+            
+            // Always test with 70MHz band
+            // DX1200: Will switch to 70MHz
+            // HF-1K: Will respond with BAND=???
+            console.log('Trying 70MHz band to detect model...');
+            setTimeout(() => {
+                window.geminiAPI.sendCommand('B70MHZ');
+            }, 500);
+        }
+        
+        // Complete detection if we just switched bands
+        if (detectionInProgress && modelDetected === false) {
+            detectionAttempts++;
+            const bandUpper = status.BAND.toUpperCase();
+            console.log(`Detection attempt ${detectionAttempts}: Current band:`, bandUpper);
+            
+            // Wait for at least 2 status updates to ensure band change has happened
+            if (detectionAttempts < 2) {
+                return; // Keep waiting
+            }
+            
+            // Check the band after trying to switch to 70MHz
+            if (bandUpper === '???' || bandUpper.includes('???')) {
+                // Got ??? response - amp doesn't have 70MHz, must be HF-1K
+                ampModel = 'HF1K';
+                modelDetected = true;
+                console.log('Model detected: HF-1K (no 70MHz band, has 472kHz)');
+                configureBandButtons('HF1K');
+                
+                // Restore original band
+                console.log('Restoring original band:', bandBeforeDetection);
+                const restoreCmd = 'B' + bandBeforeDetection;
+                setTimeout(() => {
+                    window.geminiAPI.sendCommand(restoreCmd);
+                    detectionInProgress = false;
+                    detectionAttempts = 0;
+                }, 500);
+            } else if (bandUpper === '70MHZ' || bandUpper.includes('70')) {
+                // Successfully switched to 70MHz - must be DX1200
+                ampModel = 'DX1200';
+                modelDetected = true;
+                console.log('Model detected: DX1200 (has 70MHz band)');
+                configureBandButtons('DX1200');
+                
+                // Restore original band
+                console.log('Restoring original band:', bandBeforeDetection);
+                const restoreCmd = 'B' + bandBeforeDetection;
+                setTimeout(() => {
+                    window.geminiAPI.sendCommand(restoreCmd);
+                    detectionInProgress = false;
+                    detectionAttempts = 0;
+                }, 500);
+            }
+        }
         
         // Highlight active band button (case-insensitive comparison)
         const bandUpper = status.BAND.toUpperCase();

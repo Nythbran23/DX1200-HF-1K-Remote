@@ -17,6 +17,9 @@
             <div class="header-center">
                 <span id="pttStatus" class="ptt-indicator rx">RX</span>
             </div>
+            <div class="header-model">
+                <span id="modelIndicator" class="model-indicator"></span>
+            </div>
             <div class="header-right">
                 <button id="menuBtn" class="connection-settings-btn disconnected">⚙</button>
             </div>
@@ -120,6 +123,7 @@
 
             <!-- Band Buttons -->
             <div class="band-buttons collapsible">
+                <button class="band-btn" data-band="0.472MHZ" data-model="HF1K" style="display:none;" disabled>472k</button>
                 <button class="band-btn" data-band="1.8MHZ" disabled>160</button>
                 <button class="band-btn" data-band="3.5MHZ" disabled>80</button>
                 <button class="band-btn" data-band="5MHZ" disabled>60</button>
@@ -131,7 +135,7 @@
                 <button class="band-btn" data-band="24MHZ" disabled>12</button>
                 <button class="band-btn" data-band="28MHZ" disabled>10</button>
                 <button class="band-btn" data-band="50MHZ" disabled>6</button>
-                <button class="band-btn" data-band="70MHZ" disabled>4</button>
+                <button class="band-btn" data-band="70MHZ" data-model="DX1200" style="display:none;" disabled>4</button>
             </div>
 
             <!-- Trip Alert -->
