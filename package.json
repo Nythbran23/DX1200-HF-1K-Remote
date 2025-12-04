@@ -1,0 +1,31 @@
+{
+  "name": "gemini-monitor",
+  "version": "1.0.0",
+  "description": "DX1200 Gemini Amplifier Remote Monitor and Control",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": ["amateur-radio", "amplifier", "gemini"],
+  "author": "The DX Shop",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.thedxshop.gemini-monitor",
+    "productName": "Gemini Monitor",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "target": ["AppImage", "deb"]
+    }
+  }
+}

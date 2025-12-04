@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini DX1200 Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <button id="minimizeBtn" class="minimize-btn" title="Minimize">▲</button>
+                <img src="linearampnewlogo.png" alt="Linear Amp UK" class="logo">
+            </div>
+            <div class="header-center">
+                <span id="pttStatus" class="ptt-indicator rx">RX</span>
+            </div>
+            <div class="header-right">
+                <button id="menuBtn" class="connection-settings-btn disconnected">⚙</button>
+            </div>
+        </header>
+
+        <!-- Connection Settings Dropdown (hidden by default) -->
+        <div id="settingsPanel" class="settings-dropdown" style="display: none;">
+            <h3>Connection Settings</h3>
+            <div class="settings-form">
+                <div class="form-group">
+                    <label for="ipAddress">IP Address:</label>
+                    <input type="text" id="ipAddress" placeholder="192.168.1.100" value="">
+                </div>
+                <div class="form-group">
+                    <label for="port">Port:</label>
+                    <input type="text" id="port" placeholder="9100" value="9100">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="1234" value="1234">
+                </div>
+                <div class="button-group">
+                    <button id="connectBtn" class="btn btn-primary">Connect</button>
+                    <button id="disconnectBtn" class="btn btn-secondary" disabled>Disconnect</button>
+                    <button id="testBtn" class="btn btn-secondary">Test Connection</button>
+                </div>
+                <div class="settings-footer">
+                    <button id="closeSettingsBtn" class="btn btn-secondary">Close</button>
+                    <label class="toggle-log">
+                        <input type="checkbox" id="showLogToggle">
+                        Show Communication Log
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Display Area -->
+        <div class="main-display">
+            <!-- Power Meters -->
+            <div class="meter-section">
+                <div class="meter-group">
+                    <div class="meter-label-row">
+                        <span class="meter-label">RF OUTPUT</span>
+                        <span id="powerCurrentDisplay" class="meter-value">0 W</span>
+                    </div>
+                    <div class="meter-bar-container">
+                        <div id="powerBar" class="meter-bar" style="width: 0%"></div>
+                        <div class="meter-scale">
+                            <span>0</span>
+                            <span>300</span>
+                            <span>600</span>
+                            <span>900</span>
+                            <span class="scale-hot">1250</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meter-group collapsible">
+                    <div class="meter-label-row">
+                        <span class="meter-label">PA CURRENT</span>
+                        <span id="currentMeterDisplay" class="meter-value">0 A</span>
+                    </div>
+                    <div class="meter-bar-container">
+                        <div id="currentBar" class="meter-bar current" style="width: 0%"></div>
+                        <div class="meter-scale">
+                            <span>0</span>
+                            <span>10</span>
+                            <span>20</span>
+                            <span>30</span>
+                            <span class="scale-hot">42</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Readouts -->
+            <div class="readout-bar">
+                <div class="readout-item swr-meter-item collapsible">
+                    <label>SWR</label>
+                    <div class="swr-meter-container">
+                        <div class="swr-meter-bar" id="swrBar" style="width: 0%"></div>
+                        <div class="swr-meter-scale">
+                            <span>1.0</span>
+                            <span>1.5</span>
+                            <span>2.0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="readout-item temp-meter-item collapsible">
+                    <label>TEMPERATURE</label>
+                    <div class="temp-meter-container">
+                        <div class="temp-meter-bar" id="tempBar" style="width: 0%"></div>
+                        <div class="temp-meter-scale">
+                            <span>0</span>
+                            <span>40</span>
+                            <span>80</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Band Buttons -->
+            <div class="band-buttons collapsible">
+                <button class="band-btn" data-band="1.8MHZ" disabled>160</button>
+                <button class="band-btn" data-band="3.5MHZ" disabled>80</button>
+                <button class="band-btn" data-band="5MHZ" disabled>60</button>
+                <button class="band-btn" data-band="7MHZ" disabled>40</button>
+                <button class="band-btn" data-band="10MHZ" disabled>30</button>
+                <button class="band-btn" data-band="14MHZ" disabled>20</button>
+                <button class="band-btn" data-band="18MHZ" disabled>17</button>
+                <button class="band-btn" data-band="21MHZ" disabled>15</button>
+                <button class="band-btn" data-band="24MHZ" disabled>12</button>
+                <button class="band-btn" data-band="28MHZ" disabled>10</button>
+                <button class="band-btn" data-band="50MHZ" disabled>6</button>
+                <button class="band-btn" data-band="70MHZ" disabled>4</button>
+            </div>
+
+            <!-- Trip Alert -->
+            <div id="tripAlert" class="trip-alert" style="display: none;">
+                <strong>⚠ FAULT:</strong> <span id="tripCause"></span>
+                <button id="clearTripBtn" class="btn-trip-clear">CLEAR</button>
+            </div>
+
+            <!-- Combined Control Row -->
+            <div class="main-control-row collapsible">
+                <button id="toggleRunBtn" class="toggle-run-btn standby" disabled>STANDBY</button>
+                
+                <div class="power-level-group">
+                    <button class="power-btn" data-cmd="PL" disabled>LP</button>
+                    <button class="power-btn" data-cmd="PM" disabled>MP</button>
+                    <button class="power-btn" data-cmd="PH" disabled>HP</button>
+                </div>
+                
+                <div class="antenna-group">
+                    <button class="antenna-btn" data-ant="A" disabled>ANT A</button>
+                    <button class="antenna-btn" data-ant="B" disabled>ANT B</button>
+                    <button class="antenna-btn" data-ant="C" disabled>ANT C</button>
+                </div>
+            </div>
+
+
+        <!-- Log Panel (hidden by default) -->
+        <div id="logPanel" class="log-panel" style="display: none;">
+            <div class="log-header">
+                <h3>Communication Log</h3>
+                <button id="clearLogBtn" class="btn btn-small">Clear</button>
+            </div>
+            <div id="logOutput" class="log-output"></div>
+        </div>
+    </div>
+
+    <!-- Footer Info Bar -->
+    <div class="footer-info">
+        <span id="macAddress">MAC: --</span>
+        <span id="firmwareVersion">Firmware: --</span>
+        <span class="app-version">App v1.0α</span>
+    </div>
+
+    <!-- Trip Alert Popup Modal -->
+    <div id="tripModal" class="trip-modal">
+        <div class="trip-modal-content">
+            <div class="trip-icon">⚠</div>
+            <h2>AMPLIFIER TRIP</h2>
+            <p id="tripMessage">Protection circuit activated</p>
+            <button id="clearTripBtn" class="clear-trip-btn">PRESS TO CLEAR</button>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

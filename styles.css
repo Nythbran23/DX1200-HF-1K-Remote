@@ -1,0 +1,1200 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #1a1a1a;  /* Darker outer background */
+    color: #e0e0e0;
+    font-size: 14px;
+    overflow-x: hidden;
+    padding: 5px;  /* Reduced padding */
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 12px;  /* Reduced from 20px */
+    background: #2a2a2a;  /* Container background */
+    border-radius: 8px;
+}
+
+/* Header */
+header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 10px 6px;  /* Reduced left/right padding from 12px to 6px */
+    background: #1a1a1a;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid #ff8800;
+    margin-bottom: 12px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;  /* Reduced from 15px to 8px */
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+    filter: brightness(0.91);  /* Tone down to match light grey text */
+}
+
+.model-info {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.header-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.minimize-btn {
+    background: none;
+    border: none;
+    color: #ff8800;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px 15px;
+    transition: all 0.2s;
+}
+
+.minimize-btn:hover {
+    color: #e8e8e8;
+    transform: scale(1.2);
+}
+
+.connection-indicator {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.connection-settings-btn {
+    background: #555;
+    color: #e8e8e8;
+    border: 2px solid;
+    padding: 4px 16px;  /* Match PTT indicator padding */
+    border-radius: 4px;
+    font-size: 20px;    /* Match PTT indicator font size */
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.connection-settings-btn.disconnected {
+    border-color: #ef4444;  /* Red border when disconnected */
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+}
+
+.connection-settings-btn.connected {
+    border-color: #0077ff;  /* Blue border when connected */
+    box-shadow: 0 0 8px rgba(61, 127, 86, 0.3);
+}
+
+.connection-settings-btn:hover {
+    background: #666;
+    transform: scale(1.05);
+}
+
+.status-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.connected {
+    background: #0077ff;  /* Blue to match meters */
+    box-shadow: 0 0 12px #0077ff;
+}
+
+.status-dot.disconnected {
+    background: #555;
+}
+
+/* Settings Dropdown */
+.settings-dropdown {
+    background: #2a2a2a;
+    border-bottom: 2px solid #ff8800;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+}
+
+.settings-dropdown h3 {
+    color: #ff8800;
+    margin: 0 0 15px 0;
+    font-size: 16px;
+}
+
+.settings-form {
+    display: grid;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group label {
+    min-width: 100px;
+    color: #aaa;
+    font-size: 13px;
+}
+
+.form-group input {
+    flex: 1;
+    padding: 8px 12px;
+    background: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e8e8e8;
+    font-size: 13px;
+}
+
+.settings-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #444;
+}
+
+/* Main Display */
+.main-display {
+    background: #3a3a3a;
+    border-radius: 0 0 8px 8px;
+    padding: 20px;
+    transition: padding 0.3s ease;
+}
+
+/* Minimized state */
+.container.minimized .collapsible {
+    display: none;
+}
+
+.container.minimized .main-display {
+    padding: 15px 20px;
+}
+
+.container.minimized .meter-section {
+    margin-bottom: 0;
+}
+
+.container.minimized .readout-bar {
+    margin-bottom: 0;
+}
+
+/* Power Meters */
+.meter-section {
+    margin-bottom: 20px;
+}
+
+.meter-group {
+    margin-bottom: 15px;
+}
+
+.meter-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.meter-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e8e8e8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.meter-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e8e8e8;  /* White */
+}
+
+.meter-bar-container {
+    position: relative;
+    height: 40px;
+    background: #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #000;
+}
+
+.meter-bar {
+    height: 100%;
+    transition: width 0.3s ease;
+    background: repeating-linear-gradient(
+        to right,
+        #0077ff 0px,
+        #0077ff 8px,
+        #555 8px,
+        #555 10px
+    );
+}
+
+.meter-bar.current {
+    background: repeating-linear-gradient(
+        to right,
+        #0077ff 0px,
+        #0077ff 8px,
+        #555 8px,
+        #555 10px
+    );
+}
+
+.meter-bar.reflected {
+    background: linear-gradient(to right,
+        #ffff00 0%,
+        #ff8800 50%,
+        #ff0000 100%
+    );
+}
+
+.meter-scale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;  /* Align to bottom */
+    padding: 0 2px 4px 2px;  /* Reduced from 10px to 2px horizontal */
+    pointer-events: none;
+}
+
+.meter-scale span {
+    font-size: 11px;
+    font-weight: 600;
+    color: #e8e8e8;
+    
+}
+
+.meter-scale .scale-warn {
+    color: #ffff00;
+}
+
+.meter-scale .scale-hot {
+    color: #e8e8e8;  /* White */
+}
+
+/* Info Bar */
+.info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a1a;
+    padding: 15px 20px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border: 1px solid #000;
+}
+
+.band-display {
+    font-size: 20px;
+    font-weight: 600;
+    color: #e8e8e8;
+}
+
+.state-indicators {
+    display: flex;
+    gap: 10px;
+}
+
+.state-badge, .antenna-badge {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.state-badge {
+    background: #555;
+    color: #e8e8e8;
+}
+
+.state-badge.rx {
+    background: #00aa00;
+    color: #e8e8e8;
+}
+
+.state-badge.tx {
+    background: #ff0000;
+    color: #e8e8e8;
+    animation: pulse 0.8s ease-in-out infinite;
+}
+
+.state-badge.trip {
+    background: #ff8800;
+    color: #000;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.antenna-badge {
+    background: #444;
+    color: #e8e8e8;
+}
+
+/* Readout Bar */
+.readout-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.readout-item {
+    background: #1a1a1a;
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+    border: 1px solid #000;
+}
+
+.readout-item label {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+}
+
+.readout-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e8e8e8;  /* White */
+}
+
+/* SWR Meter Bar Graph */
+.swr-meter-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.swr-meter-container {
+    position: relative;
+    height: 30px;
+    background: #555;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #000;
+}
+
+.swr-meter-bar {
+    height: 100%;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+/* Tick marks from bottom up at 0.1 intervals */
+.swr-meter-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 33%;
+    background-size: 10% 100%;
+    background-image: linear-gradient(to right, #888 0%, #888 1px, transparent 1px);
+    background-position: 0 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.swr-meter-scale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 2px 4px 2px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.swr-meter-scale span {
+    font-size: 10px;
+    font-weight: 600;
+    color: #e8e8e8;
+    
+}
+
+/* Temperature Meter Bar Graph */
+.temp-meter-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.temp-meter-container {
+    position: relative;
+    height: 30px;
+    background: #555;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #000;
+}
+
+.temp-meter-bar {
+    height: 100%;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+/* Tick marks from bottom up */
+.temp-meter-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 33%;
+    background-size: 12.5% 100%;
+    background-image: linear-gradient(to right, #888 0%, #888 1px, transparent 1px);
+    background-position: 0 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.temp-meter-scale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 2px 4px 2px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.temp-meter-scale span {
+    font-size: 10px;
+    font-weight: 600;
+    color: #e8e8e8;
+    
+}
+
+.ptt-indicator {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 4px 16px;
+    border-radius: 4px;
+    border: 2px solid;
+    display: inline-block;
+}
+
+.ptt-indicator.rx {
+    color: #0077ff;  /* Match blue status */
+    border-color: #0077ff;
+    background: rgba(61, 127, 86, 0.1);
+}
+
+.ptt-indicator.tx {
+    color: #ef4444;
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.temp-warning {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.temp-warning.warn {
+    background: #ff8800;
+    color: #000;
+}
+
+.temp-warning.high {
+    background: #ff0000;
+    color: #e8e8e8;
+}
+
+.temp-warning.critical {
+    background: #ff0000;
+    color: #e8e8e8;
+    animation: flashRed 0.5s infinite;
+}
+
+/* Temperature flashing animations */
+@keyframes flashOrange {
+    0%, 100% { color: #ff8800; }
+    50% { color: #e8e8e8; }
+}
+
+@keyframes flashRed {
+    0%, 100% { 
+        background: #ff0000;
+        color: #e8e8e8;
+    }
+    50% { 
+        background: #000;
+        color: #ff0000;
+    }
+}
+
+.temp-flash-orange {
+    animation: flashOrange 1s infinite;
+}
+
+.temp-flash-red {
+    animation: flashRed 0.5s infinite;
+}
+
+/* Band Buttons */
+.band-buttons {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 5px;  /* Reduced from 8px */
+    margin-bottom: 15px;
+}
+
+.band-btn {
+    background: #555;
+    color: #e8e8e8;
+    border: none;
+    padding: 12px 2px;  /* Reduced horizontal padding from 4px to 2px */
+    border-radius: 4px;
+    font-size: 13px;  /* Slightly smaller font */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid #555;
+}
+
+.band-btn:hover:not(:disabled):not(.active) {
+    background: #666;
+    border-color: #666;
+}
+
+.band-btn.active,
+.band-btn.active:hover,
+.band-btn.active:focus,
+.band-btn.active:active {
+    background: #ff8800 !important;
+    color: #000 !important;
+    border-color: #ffaa00 !important;
+}
+
+.band-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Main Control Row - Single line with toggle + power + antenna */
+.main-control-row {
+    display: grid;
+    grid-template-columns: 2fr 3fr 3fr;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.toggle-run-btn {
+    background: #555;
+    color: #e8e8e8;
+    border: none;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    border: 3px solid transparent;
+}
+
+.toggle-run-btn.standby {
+    background: #555;
+    color: #e8e8e8;
+    border-color: #555;
+}
+
+.toggle-run-btn.standby:hover:not(:disabled) {
+    background: #666;
+    border-color: #666;
+}
+
+.toggle-run-btn.operate {
+    background: #ff8800;
+    color: #000;
+    border-color: #ffaa00;
+}
+
+.toggle-run-btn.operate:hover:not(:disabled) {
+    background: #ffaa00;
+    border-color: #ffc033;
+}
+
+.toggle-run-btn:disabled {
+    background: #333;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.power-level-group, .antenna-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.power-btn, .antenna-btn {
+    background: #555;
+    color: #e8e8e8;
+    border: none;
+    padding: 15px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid #555;
+    text-transform: uppercase;
+}
+
+.power-btn:hover:not(:disabled):not(.active), 
+.antenna-btn:hover:not(:disabled):not(.active) {
+    background: #666;
+    border-color: #666;
+}
+
+.power-btn.active,
+.power-btn.active:hover,
+.power-btn.active:focus,
+.power-btn.active:active,
+.antenna-btn.active,
+.antenna-btn.active:hover,
+.antenna-btn.active:focus,
+.antenna-btn.active:active {
+    background: #ff8800 !important;
+    color: #000 !important;
+    border-color: #ffaa00 !important;
+}
+
+.power-btn:disabled, 
+.antenna-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Settings Button */
+.settings-btn {
+    width: 100%;
+    background: #444;
+    color: #e8e8e8;
+    border: none;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.settings-btn:hover {
+    background: #555;
+}
+
+/* Trip Alert */
+.trip-alert {
+    background: #4a0000;
+    border: 2px solid #ff0000;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ff6666;
+    font-weight: 600;
+    animation: alertPulse 1s ease-in-out infinite;
+}
+
+@keyframes alertPulse {
+    0%, 100% { border-color: #ff0000; }
+    50% { border-color: #ff6666; }
+}
+
+.btn-trip-clear {
+    background: #ff0000;
+    color: #e8e8e8;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btn-trip-clear:hover {
+    background: #ff3333;
+}
+
+/* Control Buttons */
+.control-buttons {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 15px;
+}
+
+.control-btn {
+    padding: 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+}
+
+.toggle-btn {
+    position: relative;
+}
+
+.toggle-btn.standby {
+    background: #555;
+    color: #e8e8e8;
+}
+
+.toggle-btn.standby:hover:not(:disabled) {
+    background: #666;
+}
+
+.toggle-btn.operate {
+    background: #ff8800;
+    color: #000;
+}
+
+.toggle-btn.operate:hover:not(:disabled) {
+    background: #ffaa00;
+}
+
+.toggle-btn:disabled {
+    background: #333;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.menu-btn {
+    background: #444;
+    color: #e8e8e8;
+}
+
+.menu-btn:hover {
+    background: #555;
+}
+
+/* Settings Panel */
+.settings-panel {
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #333;
+}
+
+.settings-panel h2 {
+    font-size: 18px;
+    color: #ff8800;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.settings-panel h3 {
+    font-size: 14px;
+    color: #888;
+    margin: 20px 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.settings-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-size: 12px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 10px 12px;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #ff8800;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    grid-column: 1 / -1;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: #ff8800;
+    color: #000;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #ffaa00;
+}
+
+.btn-secondary {
+    background: #444;
+    color: #e0e0e0;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #555;
+}
+
+.btn-control {
+    background: #555;
+    color: #e8e8e8;
+    padding: 10px 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-control:hover:not(:disabled) {
+    background: #666;
+}
+
+.btn-control.active {
+    background: #ff8800;
+    color: #000;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.power-level-buttons, .antenna-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.antenna-btn {
+    flex: 1;
+    min-width: 100px;
+}
+
+.settings-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+}
+
+.toggle-log {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #888;
+}
+
+/* Log Panel */
+.log-panel {
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px solid #333;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.log-header h3 {
+    font-size: 14px;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.log-output {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    border-radius: 4px;
+    padding: 10px;
+    height: 200px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.log-entry {
+    padding: 3px 0;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-entry .timestamp {
+    color: #666;
+    margin-right: 8px;
+}
+
+.log-entry.tx {
+    color: #00aaff;
+}
+
+.log-entry.rx {
+    color: #00ff88;
+}
+
+.log-entry.info {
+    color: #888;
+}
+
+.log-entry.error {
+    color: #ff3b30;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Footer Info Bar */
+.footer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background: #1a1a1a;
+    border-top: 1px solid #333;
+    font-size: 10px;
+    color: #666;
+    margin-top: 10px;
+}
+
+.footer-info span {
+    padding: 0 8px;
+}
+
+.app-version {
+    font-style: italic;
+}
+
+/* Trip Alert Modal */
+.trip-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s;
+}
+
+.trip-modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.trip-modal-content {
+    background: #2a2a2a;
+    border: 4px solid #ff0000;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+
+.trip-icon {
+    font-size: 80px;
+    color: #ff0000;
+    margin-bottom: 20px;
+    animation: pulse 1s infinite;
+}
+
+.trip-modal-content h2 {
+    color: #ff0000;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.trip-modal-content p {
+    color: #e8e8e8;
+    font-size: 18px;
+    margin: 0 0 30px 0;
+}
+
+.clear-trip-btn {
+    background: #ff0000;
+    color: #e8e8e8;
+    border: none;
+    padding: 20px 50px;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 0 #cc0000;
+}
+
+.clear-trip-btn:hover {
+    background: #ff3333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #cc0000;
+}
+
+.clear-trip-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #cc0000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .band-buttons {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    .readout-bar {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-control-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .band-buttons {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .power-level-group, .antenna-group {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
