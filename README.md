@@ -10,8 +10,6 @@
 
 ## 📥 Download
 
-**[Download Latest Release →](https://github.com/LinearAmpUK/DX1200-HF1K-Remote/releases/latest)**
-
 Choose the file for your operating system:
 
 ### macOS
