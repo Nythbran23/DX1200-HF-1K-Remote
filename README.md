@@ -1,4 +1,5 @@
-# DX1200/HF-1K Remote Monitor v1.0α
+<img width="929" height="581" alt="Screenshot 2025-12-04 at 14 58 06" src="https://github.com/user-attachments/assets/ae2060ce-41c6-419f-b879-85604b85d615" />
+# DX1200/HF-1K Remote Monitor
 
 **Professional remote monitoring and control application for Linear Amp UK DX1200 and HF-1K amplifiers.**
 
