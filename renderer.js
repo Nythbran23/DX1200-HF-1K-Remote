@@ -308,7 +308,7 @@ window.geminiAPI.onAmpBanner((banner) => {
     console.log('Received banner:', banner);
     
     // Extract MAC address from banner
-    // Format: "DxShop Gemini 1 MAC=00:50:C2:4C:E0:00 VERSION=@Version 2.5Ee_05:41:42 Mar 29 2022@"
+    // Format: "DxShop LinearAmpUK 1 MAC=00:50:C2:4C:E0:00 VERSION=@Version 2.5Ee_05:41:42 Mar 29 2022@"
     const macMatch = banner.match(/MAC=([0-9A-F:]+)/i);
     if (macMatch) {
         document.getElementById('macAddress').textContent = `MAC: ${macMatch[1]}`;

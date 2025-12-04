@@ -1,7 +1,7 @@
 {
-  "name": "gemini-monitor",
+  "name": "linearampuk-monitor",
   "version": "1.0.1-alpha",
-  "description": "DX1200 Gemini Amplifier Remote Monitor and Control",
+  "description": "DX1200 LinearAmpUK Amplifier Remote Monitor and Control",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -10,7 +10,7 @@
     "build:win": "electron-builder --win --publish never",
     "build:linux": "electron-builder --linux --publish never"
   },
-  "keywords": ["amateur-radio", "amplifier", "gemini", "linear-amp"],
+  "keywords": ["amateur-radio", "amplifier", "linearampuk", "linear-amp"],
   "author": {
     "name": "Linear Amp UK - The DX Shop",
     "email": "support@linearampuk.com"
@@ -21,9 +21,9 @@
     "electron-builder": "^24.9.1"
   },
   "build": {
-    "appId": "com.linearampuk.gemini-monitor",
-    "productName": "Gemini DX1200 Monitor",
-    "copyright": "Copyright © 2024 Linear Amp UK",
+    "appId": "com.linearampuk.linearampuk-monitor",
+    "productName": "LinearAmpUK DX1200 Monitor",
+    "copyright": "Copyright © 2025 Linear Amp UK",
     "files": [
       "main.js",
       "preload.js",

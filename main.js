@@ -25,7 +25,7 @@ function createWindow() {
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     },
-    title: 'Gemini DX1200 Monitor',
+    title: 'LinearAmpUK DX1200 Monitor',
     backgroundColor: '#1a1a1a'
   });
 
@@ -399,20 +399,20 @@ ipcMain.handle('test-connection', async (event, ip, port) => {
           return;
         }
         
-        // Check for Gemini banner
+        // Check for LinearAmpUK banner
         if (receivedData.includes('DxShop Gemini') && receivedData.includes('VERSION')) {
           const banner = receivedData.trim().split('\n').find(line => 
             line.includes('DxShop Gemini')
           );
           testClient.destroy();
-          resolve({ success: true, banner: banner || 'Gemini Amplifier' });
+          resolve({ success: true, banner: banner || 'LinearAmpUK Amplifier' });
           return;
         }
         
         // Check for status response
         if (receivedData.includes('BAND=') && receivedData.includes('POWER=')) {
           testClient.destroy();
-          resolve({ success: true, banner: 'Gemini Amplifier (verified by status)' });
+          resolve({ success: true, banner: 'LinearAmpUK Amplifier (verified by status)' });
           return;
         }
       });

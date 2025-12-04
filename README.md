@@ -14,16 +14,16 @@
 Choose the file for your operating system:
 
 ### macOS
-- **Apple Silicon (M1/M2/M3)**: `Gemini-DX1200-Monitor-*-arm64.dmg`
-- **Intel Mac**: `Gemini-DX1200-Monitor-*-x64.dmg`
+- **Apple Silicon (M1/M2/M3)**: `LinearAmpUK-DX1200-Monitor-*-arm64.dmg`
+- **Intel Mac**: `LinearAmpUK-DX1200-Monitor-*-x64.dmg`
 
 ### Windows
-- **Installer**: `Gemini-DX1200-Monitor-Setup-*.exe`
-- **Portable** (no install): `Gemini-DX1200-Monitor-*.exe`
+- **Installer**: `LinearAmpUK-DX1200-Monitor-Setup-*.exe`
+- **Portable** (no install): `LinearAmpUK-DX1200-Monitor-*.exe`
 
 ### Linux
-- **Universal**: `Gemini-DX1200-Monitor-*.AppImage`
-- **Debian/Ubuntu**: `gemini-dx1200-monitor_*_amd64.deb`
+- **Universal**: `LinearAmpUK-DX1200-Monitor-*.AppImage`
+- **Debian/Ubuntu**: `linearampuk-dx1200-monitor_*_amd64.deb`
 
 ---
 
@@ -85,8 +85,8 @@ The settings button will change from red to blue when connected!
 
 ### Linux
 ```bash
-chmod +x Gemini-DX1200-Monitor-*.AppImage
-./Gemini-DX1200-Monitor-*.AppImage
+chmod +x LinearAmpUK-DX1200-Monitor-*.AppImage
+./LinearAmpUK-DX1200-Monitor-*.AppImage
 ```
 
 ---
@@ -138,7 +138,7 @@ See [BUILD.md](BUILD.md) for details.
 
 ## 📄 License
 
-Copyright © 2024 Linear Amp UK - The DX Shop
+Copyright © 2025 Linear Amp UK - The DX Shop
 
 ---
 
