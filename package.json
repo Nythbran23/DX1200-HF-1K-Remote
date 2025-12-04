@@ -11,7 +11,10 @@
     "build:linux": "electron-builder --linux"
   },
   "keywords": ["amateur-radio", "amplifier", "gemini", "linear-amp"],
-  "author": "The DX Shop - Linear Amp UK",
+  "author": {
+    "name": "Linear Amp UK - The DX Shop",
+    "email": "support@linearampuk.com"
+  },
   "license": "ISC",
   "devDependencies": {
     "electron": "^28.0.0",
@@ -56,7 +59,8 @@
     },
     "linux": {
       "target": ["AppImage", "deb"],
-      "category": "Utility"
+      "category": "Utility",
+      "maintainer": "Linear Amp UK <support@linearampuk.com>"
     }
   }
 }
