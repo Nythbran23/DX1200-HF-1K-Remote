@@ -1,31 +1,62 @@
 {
   "name": "gemini-monitor",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "description": "DX1200 Gemini Amplifier Remote Monitor and Control",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder --mac --win --linux",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux"
   },
-  "keywords": ["amateur-radio", "amplifier", "gemini"],
-  "author": "The DX Shop",
+  "keywords": ["amateur-radio", "amplifier", "gemini", "linear-amp"],
+  "author": "The DX Shop - Linear Amp UK",
   "license": "ISC",
   "devDependencies": {
     "electron": "^28.0.0",
     "electron-builder": "^24.9.1"
   },
   "build": {
-    "appId": "com.thedxshop.gemini-monitor",
-    "productName": "Gemini Monitor",
+    "appId": "com.linearampuk.gemini-monitor",
+    "productName": "Gemini DX1200 Monitor",
+    "copyright": "Copyright © 2024 Linear Amp UK",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "styles.css",
+      "linearampnewlogo.png"
+    ],
     "mac": {
       "category": "public.app-category.utilities",
-      "target": ["dmg", "zip"]
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ]
     },
     "win": {
-      "target": ["nsis", "portable"]
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ]
     },
     "linux": {
-      "target": ["AppImage", "deb"]
+      "target": ["AppImage", "deb"],
+      "category": "Utility"
     }
   }
 }
