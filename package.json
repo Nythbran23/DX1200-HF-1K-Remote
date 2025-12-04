@@ -5,10 +5,10 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --mac --win --linux",
-    "build:mac": "electron-builder --mac",
-    "build:win": "electron-builder --win",
-    "build:linux": "electron-builder --linux"
+    "build": "electron-builder --mac --win --linux --publish never",
+    "build:mac": "electron-builder --mac --publish never",
+    "build:win": "electron-builder --win --publish never",
+    "build:linux": "electron-builder --linux --publish never"
   },
   "keywords": ["amateur-radio", "amplifier", "gemini", "linear-amp"],
   "author": {
@@ -32,6 +32,7 @@
       "styles.css",
       "linearampnewlogo.png"
     ],
+    "publish": null,
     "mac": {
       "category": "public.app-category.utilities",
       "target": [
