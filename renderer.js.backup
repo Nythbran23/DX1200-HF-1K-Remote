@@ -1,142 +1,3 @@
-// ============================================
-// KEYBOARD CONTROLLER
-// ============================================
-// KeyboardController class loaded from UniversalKeyboard.js via script tag
-
-let keyboardController;
-
-// Speech function using Web Speech API
-function speak(text) {
-    if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1.0;
-        utterance.volume = 1.0;
-        window.speechSynthesis.speak(utterance);
-    } else {
-        console.log(`SPEECH: ${text}`);
-    }
-}
-
-// Initialize keyboard controller
-function initKeyboardController() {
-    console.log('Initializing keyboard controller...');
-    
-    // Create keyboard controller with sendCommand wrapper
-    keyboardController = new KeyboardController(sendCommand, speak);
-    
-    // Handle status report requests from keyboard
-    document.addEventListener('keyboard-status-request', handleKeyboardStatusRequest);
-    
-    console.log('✅ Keyboard controller ready - Press ? for help');
-}
-
-// Wrapper for sendCommand to work with keyboard controller
-function sendCommand(command) {
-    if (window.geminiAPI && window.geminiAPI.sendCommand) {
-        window.geminiAPI.sendCommand(command);
-        addLog('tx', `Keyboard: ${command}`);
-        updateUIFromKeyboard(command);  // Update UI highlighting
-    } else {
-        console.warn('Cannot send command - not connected');
-    }
-}
-
-// Update UI when keyboard commands are used
-function updateUIFromKeyboard(command) {
-    console.log('Updating UI from keyboard command:', command);
-    
-    // Set flag to prevent status updates from overriding for 1 second
-    keyboardCommandPending = true;
-    setTimeout(() => {
-        keyboardCommandPending = false;
-        console.log('Keyboard command flag cleared');
-    }, 1000);
-    
-    // Band changes - highlight band button
-    if (command.startsWith('B') && !command.includes(',')) {
-        const band = command.substring(1);
-        document.querySelectorAll('.band-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelectorAll('.band-btn').forEach(btn => {
-            if (btn.getAttribute('data-band') === band) {
-                btn.classList.add('active');
-            }
-        });
-    }
-    
-    // Antenna changes - highlight antenna button
-    if (command.includes(',')) {
-        const antenna = command.split(',')[1];
-        console.log('Clearing antenna buttons, setting active:', antenna);
-        // First remove active from ALL antenna buttons
-        document.querySelectorAll('.antenna-btn').forEach(btn => {
-            btn.classList.remove('active');
-            console.log('Removed active from:', btn.getAttribute('data-ant'));
-        });
-        // Then add active to the correct one
-        document.querySelectorAll('.antenna-btn').forEach(btn => {
-            if (btn.getAttribute('data-ant') === antenna) {
-                btn.classList.add('active');
-                console.log('Added active to:', antenna);
-            }
-        });
-    }
-    
-    // Power changes
-    if (command === 'PH' || command === 'PM' || command === 'PL') {
-        document.querySelectorAll('.power-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelectorAll('.power-btn').forEach(btn => {
-            if (btn.getAttribute('data-cmd') === command) {
-                btn.classList.add('active');
-            }
-        });
-    }
-}
-
-// Handle status report requests from keyboard
-function handleKeyboardStatusRequest(event) {
-    const type = event.detail.type;
-    console.log(`Status report requested: ${type}`);
-    
-    // Get actual current values from the UI
-    switch(type) {
-        case 'peak-power':
-            const peakPower = currentPowerWatts;
-            speak(`Peak power ${peakPower} watts`);
-            break;
-            
-        case 'swr':
-            const swr = currentVSWR.toFixed(1);
-            speak(`SWR ${swr} to 1`);
-            break;
-            
-        case 'temperature':
-            // Try to get current temperature from temp bar
-            const tempBar = elements.tempBar;
-            if (tempBar) {
-                const tempPercent = parseFloat(tempBar.style.width) || 0;
-                const temp = Math.round((tempPercent / 100) * 80);
-                speak(`Temperature ${temp} degrees celsius`);
-            } else {
-                speak('Temperature not available');
-            }
-            break;
-            
-        case 'status':
-            const state = isOperating ? 'Operating' : 'Standby';
-            const band = currentBand ? currentBand.replace('MHZ', ' megahertz') : 'unknown';
-            speak(`Status ${state}, Band ${band}`);
-            break;
-    }
-}
-
-// ============================================
-// ORIGINAL RENDERER.JS CODE
-// ============================================
-
 // UI Elements
 const elements = {
     // Connection
@@ -179,7 +40,6 @@ const elements = {
 let connected = false;
 let currentPowerWatts = 0;
 let currentVSWR = 1.0;
-window.currentBand = '';  // Global for keyboard controller
 let currentBand = '';
 let selectedAntenna = '';
 let ampModel = null; // Will be detected: 'DX1200' or 'HF1K'
@@ -187,7 +47,6 @@ let modelDetected = false;
 let detectionInProgress = false;
 let bandBeforeDetection = null;
 let detectionAttempts = 0; // Count status updates during detection
-let keyboardCommandPending = false; // Flag to prevent status override of keyboard commands
 
 // Band frequency ranges for display
 const bandRanges = {
@@ -200,8 +59,7 @@ const bandRanges = {
     '21MHZ': '21.000 - 21.450 MHz',
     '24MHZ': '24.890 - 24.990 MHz',
     '28MHZ': '28.000 - 29.700 MHz',
-    '50MHZ': '50.000 - 54.000 MHz',
-    '70MHZ': '70.000 - 70.500 MHz'
+    '50MHZ': '50.000 - 54.000 MHz'
 };
 
 // Load saved settings
@@ -213,9 +71,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if (savedIP) elements.ipAddress.value = savedIP;
     if (savedPort) elements.port.value = savedPort;
     if (savedPassword) elements.password.value = savedPassword;
-    
-    // Initialize keyboard controller
-    initKeyboardController();
 });
 
 // Connect button
@@ -328,7 +183,6 @@ document.querySelectorAll('.band-btn').forEach(btn => {
         const band = btn.getAttribute('data-band');
         window.geminiAPI.sendCommand('B' + band);
         currentBand = band;
-        window.currentBand = band;  // Update global for keyboard
         
         // Update active state immediately
         document.querySelectorAll('.band-btn').forEach(b => b.classList.remove('active'));
@@ -546,7 +400,6 @@ window.geminiAPI.onAmpStatus((status) => {
     // Band - just update button highlighting
     if (status.BAND) {
         currentBand = status.BAND;
-        window.currentBand = status.BAND;  // Update global for keyboard
         
         // Start model detection on first band report (if not already started)
         if (!modelDetected && !detectionInProgress) {
@@ -636,12 +489,6 @@ window.geminiAPI.onAmpStatus((status) => {
         selectedAntenna = status.ANTENNA;
         
         console.log('Antenna from amp:', status.ANTENNA);
-        
-        // Skip UI update if keyboard command is pending
-        if (keyboardCommandPending) {
-            console.log('Skipping antenna UI update - keyboard command pending');
-            return;
-        }
         
         let foundMatch = false;
         // Highlight active antenna button

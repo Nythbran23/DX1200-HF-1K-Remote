@@ -1,6 +1,6 @@
 {
   "name": "linearampuk-monitor",
-  "version": "1.0.1-alpha",
+  "version": "1.0.2-alpha",
   "description": "DX1200 LinearAmpUK Amplifier Remote Monitor and Control",
   "main": "main.js",
   "scripts": {
