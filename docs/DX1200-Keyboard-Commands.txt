@@ -1,0 +1,186 @@
+================================================================================
+DX1200 GEMINI REMOTE - KEYBOARD COMMANDS REFERENCE
+================================================================================
+
+This guide provides keyboard shortcuts for the DX1200 Gemini Remote Control 
+application. All commands work identically on Mac, Windows, and Linux without 
+requiring Control, Alt, or Shift modifiers.
+
+================================================================================
+HOW TO USE
+================================================================================
+
+Commands use either two-key sequences or single keys.
+
+TWO-KEY SEQUENCES:
+- Press the first key (mode key)
+- Mode indicator displays for 3 seconds
+- Press the second key (selection key)
+- Command executes
+
+SINGLE-KEY COMMANDS:
+- Simply press the key once
+- Command executes immediately
+
+================================================================================
+BAND SELECTION (Two-Key Sequence)
+================================================================================
+
+Press B then press one of these keys:
+
+Key    Band            Frequency
+---    ----            ---------
+1      160 meters      1.8 megahertz
+2      80 meters       3.5 megahertz
+3      60 meters       5 megahertz
+4      40 meters       7 megahertz
+5      30 meters       10 megahertz
+6      20 meters       14 megahertz
+7      17 meters       18 megahertz
+8      15 meters       21 megahertz
+9      12 meters       24 megahertz
+0      10 meters       28 megahertz
+X      6 meters        50 megahertz
+Y      4 meters        70 megahertz
+
+================================================================================
+ANTENNA SELECTION (Two-Key Sequence)
+================================================================================
+
+Press A then press one of these keys:
+
+Key    Antenna
+---    -------
+A      Antenna A
+B      Antenna B
+C      Antenna C
+
+IMPORTANT: A band must be selected before selecting an antenna.
+
+================================================================================
+POWER LEVEL SELECTION (Two-Key Sequence)
+================================================================================
+
+Press P then press one of these keys:
+
+Key    Power Level
+---    -----------
+H      High Power
+M      Medium Power
+L      Low Power
+
+================================================================================
+SINGLE-KEY COMMANDS (Mode Control)
+================================================================================
+
+Key    Command         Description
+---    -------         -----------
+R      Run             Switch amplifier to Run mode (operating)
+S      Standby         Switch amplifier to Standby mode
+D      Clear Trip      Clear protection trip condition
+O      Toggle Speech   Enable or disable voice feedback
+
+================================================================================
+STATUS REPORTS (Single-Key Commands with Speech)
+================================================================================
+
+These commands speak the requested information when speech is enabled:
+
+Key    Report          Information Spoken
+---    ------          ------------------
+W      SWR             Current standing wave ratio
+T      Temperature     Current amplifier temperature in celsius
+K      Peak Power      Peak power output in watts
+I      Status          Current operating status and band
+
+================================================================================
+HELP COMMAND
+================================================================================
+
+Key    Command
+---    -------
+?      Display command summary in console
+
+================================================================================
+SPEECH SUPPORT
+================================================================================
+
+The application includes built-in text-to-speech support using the Web Speech 
+API. Press O to toggle speech on or off.
+
+When enabled, the application will speak confirmations for:
+- Band changes
+- Antenna selections
+- Power level changes
+- Mode changes
+
+Status report commands (W, T, K, I) will speak the current values when speech 
+is enabled.
+
+================================================================================
+ACCESSIBILITY FEATURES
+================================================================================
+
+- All commands work without mouse interaction
+- No modifier keys (Control, Alt, Shift) required
+- Voice feedback for all operations when speech is enabled
+- Clear visual indicators show current mode during two-key sequences
+- Three-second timeout for two-key sequences allows for deliberate operation
+- Compatible with screen readers on all platforms
+
+================================================================================
+USAGE EXAMPLES
+================================================================================
+
+EXAMPLE 1: Selecting 20 meter band (14 megahertz)
+--------------------------------------------------
+1. Press B
+2. You will see "BAND MODE" indicator
+3. Press 6
+4. The band changes to 14 megahertz
+
+EXAMPLE 2: Changing to Antenna B
+---------------------------------
+1. First ensure a band is selected
+2. Press A
+3. You will see "ANTENNA MODE" indicator
+4. Press B
+5. The antenna changes to Antenna B
+
+EXAMPLE 3: Setting high power
+------------------------------
+1. Press P
+2. You will see "POWER MODE" indicator
+3. Press H
+4. The power level changes to High
+
+EXAMPLE 4: Checking SWR with speech
+------------------------------------
+1. Ensure speech is enabled (press O if needed)
+2. Press W
+3. You will hear the current SWR value spoken
+
+================================================================================
+TIPS FOR EFFICIENT OPERATION
+================================================================================
+
+- Enable speech (press O) for hands-free confirmation of commands
+- The mode indicator displays for 3 seconds, giving you time to press the 
+  second key
+- If you press the wrong first key, simply wait 3 seconds for it to timeout
+- Press question mark (?) at any time to display the command summary in the 
+  console
+- Status reports (W, T, K, I) require speech to be enabled to hear the 
+  information
+
+================================================================================
+SUPPORT
+================================================================================
+
+DX1200 Gemini Remote Control v1.0.2-alpha
+The DX Shop - Linear Amp UK
+
+For support and updates:
+https://github.com/Nythbran23/DX1200-HF-1K-Remote
+
+================================================================================
